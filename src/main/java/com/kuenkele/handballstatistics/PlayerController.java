@@ -14,17 +14,20 @@ import java.util.UUID;
 public class PlayerController {
 
     @Autowired
-    PlayerDAO playerDAO;
+    private PlayerDAO playerDAO;
+
+    @Autowired
+    private PlayerRepository playerRepository;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Player> createPlayer(@Valid  @RequestBody Player player) {
-        if (player.getId() != null) {
+        if (player.getUuid() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player Id may not be filled");
         }
 
-        player.setId(UUID.randomUUID().toString());
-        playerDAO.createPlayer(player);
+        player.setUuid(UUID.randomUUID().toString());
+        playerRepository.save(player);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(player);
     }
