@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+	compile 'org.springdoc:springdoc-openapi-ui:1.2.32'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
