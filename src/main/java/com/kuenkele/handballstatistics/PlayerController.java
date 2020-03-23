@@ -14,9 +14,6 @@ import java.util.UUID;
 public class PlayerController {
 
     @Autowired
-    private PlayerDAO playerDAO;
-
-    @Autowired
     private PlayerRepository playerRepository;
 
     @PostMapping(consumes = "application/json", produces = "application/json")

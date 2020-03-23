@@ -1,5 +1,6 @@
 package com.kuenkele.handballstatistics;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Entity;
@@ -8,11 +9,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.Pattern;
 
+//TODO Add Created/Updated by columns
+
 @Entity
 public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private Integer id;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

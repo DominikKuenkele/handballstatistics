@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,7 +27,7 @@ class PlayerControllerTest {
     private MockMvc mvc;
 
     @MockBean
-    PlayerDAO playerDAO;
+    PlayerRepository playerRepository;
 
 
     @ParameterizedTest
@@ -37,7 +37,7 @@ class PlayerControllerTest {
         player.setFirstName(validName);
         player.setLastName(validName);
 
-        given(playerDAO.createPlayer(any(Player.class))).willReturn(true);
+        when(playerRepository.save(any(Player.class))).thenAnswer(i -> i.getArguments()[0]);
 
         mvc.perform(post("/player")
                 .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(player)))
@@ -68,8 +68,6 @@ class PlayerControllerTest {
         player.setFirstName(invalidName);
         player.setLastName("Künkele");
 
-        given(playerDAO.createPlayer(any(Player.class))).willReturn(true);
-
         mvc.perform(post("/player")
                 .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(player)))
                 .andExpect(status().isBadRequest());
@@ -81,8 +79,6 @@ class PlayerControllerTest {
         Player player = new Player();
         player.setFirstName("Dominik");
         player.setLastName(invalidName);
-
-        given(playerDAO.createPlayer(any(Player.class))).willReturn(true);
 
         mvc.perform(post("/player")
                 .contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(player)))
