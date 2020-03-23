@@ -18,7 +18,6 @@ public class PlayerController {
     private PlayerRepository playerRepository;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody
     ResponseEntity<Player> createPlayer(@Valid @RequestBody Player player) {
         if (player.getUuid() != null) {
@@ -52,5 +51,21 @@ public class PlayerController {
 
         DefaultHttpResponse httpResponse = new DefaultHttpResponse("Deletion successful", "Player with uuid '" + uuid + "' was deleted");
         return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
+    }
+
+    @PutMapping(produces = "application/json", consumes = "application/json", path = "/{uuid}")
+    public @ResponseBody
+    ResponseEntity<Player> updatePlayer(@PathVariable String uuid, @Valid @RequestBody Player newPlayer) {
+        Optional<Player> existingPlayer = playerRepository.findByUuid(uuid);
+        if (existingPlayer.isPresent()) {
+            existingPlayer.get().setFirstName(newPlayer.getFirstName());
+            existingPlayer.get().setLastName(newPlayer.getLastName());
+
+            playerRepository.save(existingPlayer.get());
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(existingPlayer.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified player was not found");
+        }
     }
 }
