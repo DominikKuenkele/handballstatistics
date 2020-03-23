@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest
-class PlayerControllerTest {
+class PlayerControllerCreationTest {
 
     @Autowired
     private MockMvc mvc;
