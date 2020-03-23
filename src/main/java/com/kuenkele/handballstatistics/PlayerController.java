@@ -19,7 +19,8 @@ public class PlayerController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody ResponseEntity<Player> createPlayer(@Valid @RequestBody Player player) {
+    public @ResponseBody
+    ResponseEntity<Player> createPlayer(@Valid @RequestBody Player player) {
         if (player.getUuid() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player Id may not be filled");
         }
@@ -31,12 +32,25 @@ public class PlayerController {
     }
 
     @GetMapping(produces = "application/json", path = "/{uuid}")
-    public @ResponseBody ResponseEntity<Player> getPlayer(@PathVariable String uuid) {
+    public @ResponseBody
+    ResponseEntity<Player> getPlayer(@PathVariable String uuid) {
         Optional<Player> player = playerRepository.findByUuid(uuid);
-        if (player.isEmpty()){
+        if (player.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified player was not found");
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(player.get());
+    }
+
+    @DeleteMapping(produces = "application/json", path = "/{uuid}")
+    public @ResponseBody
+    ResponseEntity<DefaultHttpResponse> deletePlayer(@PathVariable String uuid) {
+        int number = playerRepository.deleteByUuid(uuid);
+
+        if (number < 1)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Specified player was not found");
+
+        DefaultHttpResponse httpResponse = new DefaultHttpResponse("Deletion successful", "Player with uuid '" + uuid + "' was deleted");
+        return ResponseEntity.status(HttpStatus.OK).body(httpResponse);
     }
 }
