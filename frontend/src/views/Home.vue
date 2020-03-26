@@ -15,47 +15,40 @@
 </template>
 
 <script>
-import HomeItem from '../components/HomeItem'
-
+import HomeItem from "../components/HomeItem";
 
 export default {
   components: {
-    'hs-home-item': HomeItem,
+    "hs-home-item": HomeItem
   }
-
-}
+};
 </script>
 
 <style scoped>
-.home{
-  display:flex;
-  height:100%;
-  width:100%;
+.home {
+  display: flex;
+  height: 100%;
+  width: 100%;
   position: relative;
 }
 
-.left-home{
-  width:60%;
-  height:100%;
-  background-color: #C5E1A5;
+.left-home {
+  width: 60%;
+  height: 100%;
 }
 
-.right-home{
+.right-home {
   display: flex;
   flex-direction: column;
-  width:40%;
-  height:100%;
+  width: 40%;
+  height: 100%;
 }
 
-.upper-right{
-  height:50%;
-  background-color: #EF9A9A
-  /*background-color:red;*/
+.upper-right {
+  height: 50%;
 }
 
-.lower-right{
-  height:50%;
-  background-color:#90CAF9;
+.lower-right {
+  height: 50%;
 }
-
 </style>
